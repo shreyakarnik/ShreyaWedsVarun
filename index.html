@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Varun &amp; Shreya — Civil Ceremony</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===================== HERO / STAMPS SCREEN ===================== -->
+  <section id="hero-screen" class="screen" aria-hidden="false">
+    <div class="hero-frame" id="hero-frame">
+
+      <div class="sky" id="hero-sky"></div>
+      <div class="clouds-bg" id="hero-clouds"></div>
+
+      <div class="logomark" id="hero-logomark">
+        <img class="logomark-img" src="assets/images/logomark.png" alt="" />
+      </div>
+
+      <!-- Postcard Flow 1 : tap/drag hotspot -->
+      <button class="flow flow1" id="flow1" aria-label="Start"></button>
+
+      <!-- Stamp: Mumbai -->
+      <div class="stamp-group mumbai" id="stamp-mumbai" data-parallax="0.15">
+        <img class="stamp-img" src="assets/images/stamp-mumbai.webp" alt="Mumbai stamp" />
+        <img class="cloud-mini front-cloud-2-mumbai" src="assets/images/front-cloud-2-mumbai.webp" alt="" />
+        <img class="cloud-mini front-cloud-mumbai" src="assets/images/front-cloud-mumbai.webp" alt="" />
+      </div>
+
+      <!-- Postcard Flow 2 -->
+      <div class="flow flow2" id="flow2"></div>
+
+      <!-- Stamp: Pune -->
+      <div class="stamp-group pune" id="stamp-pune" data-parallax="0.28">
+        <img class="stamp-img pune-stamp" src="assets/images/stamp-pune.webp" alt="Pune stamp" />
+        <img class="cloud-mini front-cloud-pune" src="assets/images/front-cloud-pune.webp" alt="" />
+      </div>
+
+      <!-- Stamp: Toronto -->
+      <div class="stamp-group toronto" id="stamp-toronto" data-parallax="0.4">
+        <img class="cloud-mini back-cloud-toronto" src="assets/images/back-cloud-toronto.webp" alt="" />
+        <img class="stamp-img toronto-stamp" src="assets/images/stamp-toronto.webp" alt="Toronto stamp" />
+        <img class="cloud-mini front-cloud-toronto" src="assets/images/front-cloud-toronto.webp" alt="" />
+      </div>
+
+      <!-- Postcard Flow 3 -->
+      <div class="flow flow3" id="flow3"></div>
+
+      <!-- Stamp: SF -->
+      <div class="stamp-group sf" id="stamp-sf" data-parallax="0.52">
+        <img class="cloud-mini back-cloud-sf" src="assets/images/back-cloud-sf.webp" alt="" />
+        <img class="stamp-img sf-stamp" src="assets/images/stamp-sf.webp" alt="San Francisco stamp" />
+        <img class="cloud-mini front-cloud-sf" src="assets/images/front-cloud-sf.webp" alt="" />
+        <img class="cloud-mini front-cloud-2-sf" src="assets/images/front-cloud-2-sf.webp" alt="" />
+      </div>
+
+      <div class="cloud-bottom" id="hero-cloud-bottom">
+        <img src="assets/images/back-cloud-bottom.webp" alt="" />
+      </div>
+
+      <nav class="nav-pills">
+        <button class="pill-btn" data-goto="countdown" aria-label="Countdown"><img src="assets/buttons/countdown-button.png" alt="Countdown" /></button>
+        <!-- TODO: swap in the real ceremony livestream link once Shreya sends it -->
+        <a class="pill-btn" href="https://studio.youtube.com/channel/UCBUAbR2wHDprBh8fI9w0-Zg/livestreaming" target="_blank" rel="noopener" aria-label="Join ceremony"><img src="assets/buttons/join-ceremony-button.png" alt="Join ceremony" /></a>
+        <a class="pill-btn" href="https://drive.google.com/drive/folders/1FWm6tz707Vqrj63blVDUgqXhr1UuGJ5M?usp=drive_link" target="_blank" rel="noopener" aria-label="Gallery"><img src="assets/buttons/gallery-button.png" alt="Gallery" /></a>
+      </nav>
+
+      <!-- Postcard Flow 4 -->
+      <div class="flow flow4" id="flow4"></div>
+
+    </div>
+  </section>
+
+  <!-- Postcard entrance (wedding invite) — deliberately OUTSIDE .hero-frame/.screen
+       (both overflow:hidden, which breaks position:sticky) so it can lock in place
+       once scrolled into view instead of scrolling straight past. Shown/hidden in
+       sync with the hero screen by script.js. -->
+  <div class="postcard-sticky-zone" id="postcard-sticky-zone">
+    <div class="postcard-zone-bg" aria-hidden="true"></div>
+    <div class="postcard-parallax" id="postcard-parallax">
+      <div class="postcard-entrance" id="postcard-entrance">
+        <button class="postcard-card" id="postcard-card" aria-label="Open invitation"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== COUNTDOWN SCREEN ===================== -->
+  <section id="countdown-screen" class="screen hidden" aria-hidden="true">
+    <div class="hero-frame countdown-frame">
+      <div class="sky" id="cd-sky"></div>
+      <div class="clouds-bg cd-clouds" id="cd-clouds"></div>
+      <div class="cloud-bottom cd-cloud-bottom">
+        <img src="assets/images/back-cloud-bottom.webp" alt="" />
+      </div>
+
+      <div class="logomark cd-logomark">
+        <img class="logomark-img" src="assets/images/logomark.png" alt="" />
+      </div>
+
+      <div class="countdown-clock" id="countdown-clock">00:00:00</div>
+      <span class="cd-label cd-label-hours">days</span>
+      <span class="cd-label cd-label-minutes">hours</span>
+      <span class="cd-label cd-label-seconds">minutes</span>
+
+      <div class="stamp-group sf cd-sf">
+        <img class="cloud-mini back-cloud-sf" src="assets/images/back-cloud-sf.webp" alt="" />
+        <img class="stamp-img sf-stamp" src="assets/images/stamp-sf.webp" alt="San Francisco stamp" />
+        <img class="cloud-mini front-cloud-sf" src="assets/images/front-cloud-sf.webp" alt="" />
+        <img class="cloud-mini front-cloud-2-sf" src="assets/images/front-cloud-2-sf.webp" alt="" />
+      </div>
+
+      <div class="plane-flow" id="plane-flow">
+        <img id="plane-flow-img" src="assets/images/plane/plane-1.svg" alt="paper plane" />
+      </div>
+
+      <nav class="nav-pills">
+        <button class="pill-btn" data-goto="hero" aria-label="Invitation"><img src="assets/buttons/invitation-button.png" alt="Invitation" /></button>
+        <!-- TODO: swap in the real ceremony livestream link once Shreya sends it -->
+        <a class="pill-btn" href="https://studio.youtube.com/channel/UCBUAbR2wHDprBh8fI9w0-Zg/livestreaming" target="_blank" rel="noopener" aria-label="Join ceremony"><img src="assets/buttons/join-ceremony-button.png" alt="Join ceremony" /></a>
+        <a class="pill-btn" href="https://drive.google.com/drive/folders/1FWm6tz707Vqrj63blVDUgqXhr1UuGJ5M?usp=drive_link" target="_blank" rel="noopener" aria-label="Gallery"><img src="assets/buttons/gallery-button.png" alt="Gallery" /></a>
+      </nav>
+    </div>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

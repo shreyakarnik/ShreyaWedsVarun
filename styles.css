@@ -1,0 +1,367 @@
+/* =========================================================
+   Varun & Shreya — Wedding site
+   Transcribed 1:1 from Figma file CUgnISBz3SHjDHqFNBPFjG
+   Frame reference: "iPhone 16 & 17 Pro — Hero (Parallax End)" (106:35)
+   and "countdown" (96:71). Design width = 402px (mobile-first).
+   ========================================================= */
+
+@font-face {
+  font-family: "Dutch801";
+  src: url("fonts/dutch801bt_roman.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Dutch801";
+  src: url("fonts/dutch801bt_bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Dutch801";
+  src: url("fonts/dutch801bt_italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Dutch801";
+  src: url("fonts/dutch801bt_bolditalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --sky: #9cd4de;
+  --ink: #004f71;
+  --card: #eaddb9;
+  --pill-bg: rgba(238, 245, 248, 0.2);
+  --pill-bg-active: rgba(0, 79, 113, 0.5);
+  --frame-w: 402px;
+  --serif: "Dutch801", Georgia, "Times New Roman", serif;
+  --serif-italic: "Dutch801", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  margin: 0;
+  padding: 0;
+  background: var(--sky);
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--sky);
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--serif);
+  color: var(--ink);
+  display: flex;
+  justify-content: center;
+  /* deliberately NOT overflow-x:hidden here — html already clips horizontal
+     scroll for the page. Setting it on body too makes body compute
+     overflow-y:auto (per the CSS overflow spec), which quietly turns body
+     into its own scroll container even though it never actually scrolls
+     (its content exactly fills it). Any position:sticky element inside then
+     gets measured against BODY's static scroll box instead of the real page
+     scroll on <html> — it engages for a single frame and then just tracks
+     the scroll 1:1, which is exactly the "sticky doesn't really stick" bug. */
+}
+
+.app {
+  width: 100%;
+  max-width: var(--frame-w);
+  min-width: 320px;
+  position: relative;
+  background: var(--sky);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+}
+
+.screen { position: relative; width: 100%; overflow: hidden; }
+.screen.hidden { display: none; }
+
+.hero-frame {
+  position: relative;
+  width: 100%;
+  min-height: 1500px;
+  background: var(--sky);
+  overflow: hidden;
+}
+
+.countdown-frame { min-height: 1500px; }
+
+/* ---------- sky / clouds / bottom cloud ---------- */
+
+.sky {
+  position: absolute;
+  left: -32px;
+  top: 0;
+  width: 626px;
+  height: 1831px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-image: url("assets/images/background-sky.webp");
+  z-index: 10;
+}
+
+.clouds-bg {
+  position: absolute;
+  left: -86px;
+  top: -353px;
+  width: 626px;
+  height: 1831px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-image: url("assets/images/background-clouds.webp");
+  transition: transform 0.2s linear;
+  z-index: 20;
+}
+
+.cloud-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 800px;
+  pointer-events: none;
+  z-index: 130;
+}
+.cloud-bottom img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* On the countdown screen, back-cloud-bottom sits BEHIND the logomark/clock/plane
+   (per Figma's layer order for this frame — the reverse of the hero screen, where
+   cloud-bottom is the frontmost layer). Without this override it inherits
+   .cloud-bottom's z-index:130 and paints over the countdown digits entirely. */
+.cd-cloud-bottom { height: 620px; z-index: 25; }
+
+/* ---------- logomark ---------- */
+
+.logomark {
+  position: absolute;
+  left: 87px;
+  top: 152px;
+  width: 221px;
+  height: 214px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 30;
+}
+.logomark-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+/* ---------- postcard flow hotspots (JS renders inner flourish per step) ---------- */
+
+.flow {
+  position: absolute;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  pointer-events: none;
+}
+/* z-index follows the exact Figma layer stack (front to back):
+   back-cloud-bottom > Flow4 > Postcard Entrance > SF > Flow3 > Toronto >
+   Flow2 > Pune > Mumbai > Flow1 > Logomark > background-clouds > background-sky */
+.flow1 { left: -10px; top: 222px; width: 380.264px; height: 576.004px; pointer-events: auto; cursor: pointer; z-index: 40; }
+.flow2 { left: -10px; top: 217px; width: 380.264px; height: 576.004px; opacity: 0; z-index: 70; }
+.flow3 { left: -17px; top: 211px; width: 503.242px; height: 614.424px; opacity: 0; z-index: 90; }
+.flow4 { left: -151px; top: 234px; width: 596px; height: 614px; opacity: 0; z-index: 120; }
+.flow-vec { position: absolute; transform-origin: center center; }
+
+/* ---------- stamp groups ---------- */
+
+.stamp-group { position: absolute; pointer-events: none; }
+.stamp-img { position: absolute; }
+.cloud-mini { position: absolute; }
+
+.mumbai { left: -77px; top: 115px; width: 353px; height: 363px; z-index: 50; }
+.mumbai .stamp-img { left: 118.7px; top: -46.22px; width: 166.4px; height: 257.9px; }
+.mumbai .front-cloud-2-mumbai { left: -45.4px; top: 56.42px; width: 314.8px; height: 224.9px; transform: rotate(5deg); }
+.mumbai .front-cloud-mumbai { left: 47.1px; top: 106.56px; width: 356.3px; height: 253.2px; transform: rotate(-5deg); }
+
+.pune { left: 24.73px; top: 158.26px; width: 412.5px; height: 449px; z-index: 60; }
+.pune .pune-stamp { left: 167.44px; top: 0; width: 169.06px; height: 260.01px; }
+.pune .front-cloud-pune { left: 0; top: 136.07px; width: 389.48px; height: 281.41px; transform: rotate(5deg); }
+
+.toronto { left: -87.95px; top: 297px; width: 468px; height: 496px; z-index: 80; }
+.toronto .back-cloud-toronto { left: 75.73px; top: 0.72px; width: 194.02px; height: 272.5px; transform: rotate(-3deg); }
+.toronto .toronto-stamp { left: 104.95px; top: 0; width: 200.56px; height: 280.13px; }
+.toronto .front-cloud-toronto { left: 0; top: 147.16px; width: 344.44px; height: 309.56px; transform: rotate(7deg); }
+
+.sf { left: -63.16px; top: 413.71px; width: 580px; height: 630px; z-index: 100; }
+.sf .back-cloud-sf { left: 104.73px; top: 49.49px; width: 459.91px; height: 301.71px; transform: rotate(-3deg); }
+.sf .sf-stamp { left: 219.85px; top: 0; width: 228.26px; height: 301.71px; }
+.sf .front-cloud-sf { left: 0; top: 149.77px; width: 473.47px; height: 345.78px; transform: rotate(8deg); }
+.sf .front-cloud-2-sf { left: 291.4px; top: 27.47px; width: 223.74px; height: 415.84px; transform: rotate(-7deg); }
+.cd-sf { left: 66px; top: 249px; width: 407px; height: 400px; }
+.cd-sf .back-cloud-sf { left: 0; top: 112px; width: 407px; height: 267px; transform:none; }
+.cd-sf .sf-stamp { left: 124px; top: 0; width: 202px; height: 267px; }
+.cd-sf .front-cloud-sf { left: 3px; top: 129px; width: 419px; height: 306px; transform:none; }
+.cd-sf .front-cloud-2-sf { left: 159px; top: 98px; width: 198px; height: 368px; transform:none; }
+
+/* ---------- postcard entrance + card ---------- */
+
+/* Sticky zone: lives OUTSIDE .hero-frame/.screen's overflow:hidden (see index.html —
+   it's a sibling of #hero-screen, not nested inside it) because position:sticky is
+   broken by any clipping ancestor. Anchored at Figma's exact top:675 so it appears
+   in the right place. Height is trimmed to just enough scroll room for the card
+   (803px tall) to lock in place for a short beat (~130px) before the zone ends,
+   rather than the much longer runway it had before — keeps the trailing gap past
+   hero-frame's 1500px cutoff small. Absolutely positioned so it adds zero extra
+   height to .app — it overlays, it doesn't push. */
+.postcard-sticky-zone {
+  position: absolute;
+  left: 0;
+  top: 675px;
+  width: 100%;
+  height: 1000px;
+  pointer-events: none;
+  z-index: 110;
+}
+/* hero-frame clips its own sky/clouds art at 1500px, but this zone runs on to
+   1675px so the postcard has a little room to lock in place before it runs out
+   of track. This fills just that trailing gap (825->1000 in the zone's own local
+   coordinates, i.e. global 1500->1675) by continuing the same sky gradient
+   image from the exact point hero-frame cut it off, instead of falling back to
+   flat page background (a visibly different, lighter color) mid-gradient. */
+.postcard-zone-bg {
+  position: absolute;
+  left: 0;
+  top: 825px;
+  width: 100%;
+  height: 175px;
+  overflow: hidden;
+  background: #2b87aa; /* sky.webp's own color at its bottom edge, for the sliver past its natural extent */
+  z-index: 0;
+  pointer-events: none;
+}
+.postcard-zone-bg::before {
+  content: "";
+  position: absolute;
+  left: -32px;
+  top: -1500px; /* sky.webp's natural top is global 0; this box's own top is global 1500 (825 local + 675 zone offset) */
+  width: 626px;
+  height: 1831px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-image: url("assets/images/background-sky.webp");
+}
+.postcard-parallax {
+  position: sticky;
+  top: 64px; /* locks just below the fixed nav pills once scrolled into place */
+  margin-left: 25px;
+  width: 345px;
+  pointer-events: none;
+}
+.postcard-entrance {
+  position: relative;
+  width: 345px;
+  height: 803px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(450px);
+  pointer-events: none;
+}
+.postcard-entrance.revealed {
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 1.7s cubic-bezier(0, 0, 0.35, 1), opacity 0.9s ease-out;
+  pointer-events: auto;
+}
+
+.postcard-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 345px;
+  height: 208.8px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  overflow: visible;
+  transition: height 0.3s ease;
+  pointer-events: auto;
+}
+.postcard-card .pc-frame {
+  display: block;
+  width: 345px;
+  height: 100%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* ---------- nav pills ---------- */
+
+.nav-pills {
+  position: fixed;
+  left: 50%;
+  top: 25px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 500;
+}
+.pill-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 98px; height: 33px; padding: 0; border: 0; border-radius: 999px;
+  background: transparent; cursor: pointer; text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.pill-btn img {
+  width: 100%; height: 100%; display: block; pointer-events: none;
+  -webkit-user-drag: none;
+}
+.pill-btn:active img { filter: brightness(0.96); }
+
+/* ---------- countdown ---------- */
+
+.countdown-clock {
+  position: absolute;
+  left: 39px;
+  top: 121px;
+  width: 323px;
+  height: 113px;
+  font-family: var(--serif);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 80px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-align: center;
+  z-index: 35; /* above clouds-bg (20) / cd-cloud-bottom (25), matching Figma's order */
+}
+.cd-label {
+  position: absolute;
+  top: 121px;
+  font-family: var(--serif-italic);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: var(--ink);
+  text-transform: lowercase;
+  z-index: 36;
+}
+.cd-label-hours { left: 71px; }
+.cd-label-minutes { left: 169px; }
+.cd-label-seconds { left: 285px; }
+
+.plane-flow {
+  position: absolute;
+  left: 66px;
+  top: 281px;
+  width: 422px;
+  height: 305.404px;
+  pointer-events: none;
+  z-index: 105; /* above cd-sf (.sf, z-index:100), matching Figma's order */
+}
+.plane-flow img { display: block; width: 100%; height: 100%; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 402px) {
+  .app { width: 100vw; }
+}
