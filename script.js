@@ -185,44 +185,60 @@
     setTimeout(next, opts.revealDuration);
   }
 
+  // Chain speed, ~2x the original pace. Durations for each flow are derived
+  // from these constants (via chainDuration below) instead of hand-computed
+  // magic numbers, so the handoff between flows always lines up correctly.
+  const FLOW1_REVEAL_MS = 100;
+  const FLOW1_HOLD_MS = 10;
+  const FLOW1_STEP_MS = 100;
+  const FLOW2_OPTS = { revealDuration: 200, holdMs: 350, stepDuration: 200, hideAfter: true };
+  const FLOW3_OPTS = { revealDuration: 200, holdMs: 350, stepDuration: 200, hideAfter: true };
+  const FLOW4_OPTS = { revealDuration: 200, holdMs: 0, stepDuration: 0, hideAfter: true };
+
+  function chainDuration(steps, opts) {
+    return opts.revealDuration + Math.max(0, steps.length - 1) * (opts.holdMs + opts.stepDuration);
+  }
+
   function startSequence() {
     if (sequenceStarted) return;
     sequenceStarted = true;
 
-    // Flow 1: tap -> 0.2s reveal of step2, then 8x (0.02s hold + 0.2s step)
-    flow1El.style.transition = "opacity 200ms ease-out";
+    // Flow 1: tap -> reveal step2, then step through the rest of FLOW1_STEPS
+    flow1El.style.transition = `opacity ${FLOW1_REVEAL_MS}ms ease-out`;
     let i = 0;
     renderFlowStep(flow1Refs, FLOW1_STEPS[0]);
     function flow1Next() {
       i++;
       if (i >= FLOW1_STEPS.length) {
         setTimeout(() => {
-          flow1El.style.transition = "opacity 300ms ease-in";
+          flow1El.style.transition = "opacity 150ms ease-in";
           flow1El.style.opacity = "0";
         }, 10);
         return;
       }
       renderFlowStep(flow1Refs, FLOW1_STEPS[i]);
-      setTimeout(flow1Next, 20 + 200);
+      setTimeout(flow1Next, FLOW1_HOLD_MS + FLOW1_STEP_MS);
     }
-    setTimeout(flow1Next, 200);
+    setTimeout(flow1Next, FLOW1_REVEAL_MS);
 
-    const T1 = 1960; // Flow1 tap -> last step, ms
+    // Flow1 tap -> its last step (i.e. FLOW1_STEPS.length - 1 transitions after
+    // the initial reveal), which is when Flow2 should start overlapping in.
+    const T1 = FLOW1_REVEAL_MS + (FLOW1_STEPS.length - 2) * (FLOW1_HOLD_MS + FLOW1_STEP_MS);
 
     setTimeout(() => {
-      playChain(flow2Refs, FLOW2_STEPS, flow2El, { revealDuration: 400, holdMs: 700, stepDuration: 400, hideAfter: true });
+      playChain(flow2Refs, FLOW2_STEPS, flow2El, FLOW2_OPTS);
     }, T1);
-    const flow2End = T1 + 400 + (700 + 400) * 2; // 4560
+    const flow2End = T1 + chainDuration(FLOW2_STEPS, FLOW2_OPTS);
 
     setTimeout(() => {
-      playChain(flow3Refs, FLOW3_STEPS, flow3El, { revealDuration: 400, holdMs: 700, stepDuration: 400, hideAfter: true });
+      playChain(flow3Refs, FLOW3_STEPS, flow3El, FLOW3_OPTS);
     }, flow2End);
-    const flow3End = flow2End + 400 + (700 + 400); // 6060
+    const flow3End = flow2End + chainDuration(FLOW3_STEPS, FLOW3_OPTS);
 
     setTimeout(() => {
-      playChain(flow4Refs, FLOW4_STEPS, flow4El, { revealDuration: 400, holdMs: 0, stepDuration: 0, hideAfter: true });
+      playChain(flow4Refs, FLOW4_STEPS, flow4El, FLOW4_OPTS);
     }, flow3End);
-    const flow4End = flow3End + 400; // 6460
+    const flow4End = flow3End + chainDuration(FLOW4_STEPS, FLOW4_OPTS);
 
     setTimeout(() => {
       const entrance = document.getElementById("postcard-entrance");
