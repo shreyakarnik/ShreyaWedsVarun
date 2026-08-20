@@ -129,7 +129,7 @@ body {
   width: 100%;
   height: 800px;
   pointer-events: none;
-  z-index: 130;
+  z-index: 105; /* below .postcard-sticky-zone (110) so the postcard sits in front of the fog */
 }
 .cloud-bottom img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 /* On the countdown screen, back-cloud-bottom sits BEHIND the logomark/clock/plane
