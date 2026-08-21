@@ -116,14 +116,19 @@
       bg.style.height = "98.59%";
       el.appendChild(bg);
     }
-    const vec = document.createElement("div");
-    vec.className = "flow-vec-wrap";
-    vec.style.position = "absolute";
-    el.appendChild(vec);
     const img = document.createElement("img");
     img.className = "flow-vec";
-    vec.appendChild(img);
-    return { wrap: vec, img };
+    img.style.position = "absolute";
+    img.style.top = "0";
+    img.style.left = "0";
+    el.appendChild(img);
+    // Cache the container's pixel box once so each step can be placed with a
+    // transform: translate()/rotate() instead of animating top/left/right/
+    // bottom — those are layout properties, and re-laying-out a large
+    // fill:true icon (Flow2's SVGs cover most of their box) on every
+    // animation frame is what made that one janky/lag behind the rest.
+    // transform is compositor-only, so it stays smooth regardless of size.
+    return { img, w: el.offsetWidth, h: el.offsetHeight };
   }
 
   // moveMs: how long to glide from the previous waypoint to this one. Passing
@@ -132,26 +137,28 @@
   // there for the "hold" — that dead pause read as "stopping in the middle."
   function renderFlowStep(refs, step, moveMs) {
     const glide = moveMs || 0;
-    refs.wrap.style.transition = glide
-      ? `top ${glide}ms ease-in-out, left ${glide}ms ease-in-out, right ${glide}ms ease-in-out, bottom ${glide}ms ease-in-out, opacity ${glide}ms ease-in-out`
-      : "none";
-    refs.img.style.transition = glide ? `transform ${glide}ms ease-in-out` : "none";
-
     const [t, r, b, l] = step.inset;
-    refs.wrap.style.inset = `${t}% ${r}% ${b}% ${l}%`;
-    refs.wrap.style.display = "flex";
-    refs.wrap.style.alignItems = "center";
-    refs.wrap.style.justifyContent = "center";
+    const leftPx = (l / 100) * refs.w;
+    const rightPx = refs.w - (r / 100) * refs.w;
+    const topPx = (t / 100) * refs.h;
+    const bottomPx = refs.h - (b / 100) * refs.h;
+    const boxW = rightPx - leftPx;
+    const boxH = bottomPx - topPx;
+    const w = step.fill ? boxW : step.w;
+    const h = step.fill ? boxH : step.h;
+    const cx = (leftPx + rightPx) / 2;
+    const cy = (topPx + bottomPx) / 2;
+    const tx = cx - w / 2;
+    const ty = cy - h / 2;
+
+    refs.img.style.width = w + "px";
+    refs.img.style.height = h + "px";
     refs.img.src = step.img;
-    if (step.fill) {
-      refs.img.style.width = "100%";
-      refs.img.style.height = "100%";
-    } else {
-      refs.img.style.width = step.w + "px";
-      refs.img.style.height = step.h + "px";
-    }
-    refs.img.style.transform = `rotate(${step.rot}deg)`;
-    refs.wrap.style.opacity = step.opacity != null ? step.opacity : 1;
+    refs.img.style.transition = glide
+      ? `transform ${glide}ms ease-in-out, opacity ${glide}ms ease-in-out`
+      : "none";
+    refs.img.style.transform = `translate(${tx}px, ${ty}px) rotate(${step.rot}deg)`;
+    refs.img.style.opacity = step.opacity != null ? step.opacity : 1;
   }
 
   const flow1El = document.getElementById("flow1");
@@ -195,15 +202,16 @@
     setTimeout(next, opts.revealDuration);
   }
 
-  // Chain speed, ~2x the original pace. Durations for each flow are derived
-  // from these constants (via chainDuration below) instead of hand-computed
-  // magic numbers, so the handoff between flows always lines up correctly.
-  const FLOW1_REVEAL_MS = 100;
-  const FLOW1_HOLD_MS = 10;
-  const FLOW1_STEP_MS = 100;
-  const FLOW2_OPTS = { revealDuration: 200, holdMs: 350, stepDuration: 200, hideAfter: true };
-  const FLOW3_OPTS = { revealDuration: 200, holdMs: 350, stepDuration: 200, hideAfter: true };
-  const FLOW4_OPTS = { revealDuration: 200, holdMs: 0, stepDuration: 200, hideAfter: true };
+  // Chain speed, further sped up on top of the earlier 2x pass. Durations for
+  // each flow are derived from these constants (via chainDuration below)
+  // instead of hand-computed magic numbers, so the handoff between flows
+  // always lines up correctly.
+  const FLOW1_REVEAL_MS = 70;
+  const FLOW1_HOLD_MS = 0;
+  const FLOW1_STEP_MS = 70;
+  const FLOW2_OPTS = { revealDuration: 150, holdMs: 180, stepDuration: 150, hideAfter: true };
+  const FLOW3_OPTS = { revealDuration: 150, holdMs: 180, stepDuration: 150, hideAfter: true };
+  const FLOW4_OPTS = { revealDuration: 150, holdMs: 0, stepDuration: 150, hideAfter: true };
 
   function chainDuration(steps, opts) {
     return opts.revealDuration + Math.max(0, steps.length - 1) * (opts.holdMs + opts.stepDuration);

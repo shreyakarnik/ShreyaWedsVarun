@@ -360,6 +360,19 @@ body {
 }
 .plane-flow img { display: block; width: 100%; height: 100%; }
 
+/* ---------- screen footer ---------- */
+
+.screen-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  z-index: 150; /* frontmost decorative layer, above cloud-bottom, below the fixed nav pills */
+}
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 402px) {
