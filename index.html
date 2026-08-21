@@ -136,10 +136,6 @@
       <div class="sky gal-sky"></div>
       <div class="clouds-bg gal-clouds"></div>
 
-      <div class="gal-plane-flow" aria-hidden="true">
-        <img src="assets/images/plane/plane-1.svg" alt="" />
-      </div>
-
       <div class="logomark gal-logomark">
         <img class="logomark-img" src="assets/images/logomark.png" alt="" />
       </div>
@@ -150,9 +146,11 @@
       </div>
 
       <div class="gal-carousel" id="gal-carousel">
-        <img class="gal-slide gal-slide-prev" id="gal-slide-prev" src="assets/images/gallery/placeholder-1.webp" alt="" aria-hidden="true" />
-        <img class="gal-slide gal-slide-next" id="gal-slide-next" src="assets/images/gallery/placeholder-1.webp" alt="" aria-hidden="true" />
-        <img class="gal-slide gal-slide-current" id="gal-slide-current" src="assets/images/gallery/placeholder-1.webp" alt="Wedding gallery photo" />
+        <div class="gal-track" id="gal-track">
+          <img class="gal-slide gal-slide-prev" id="gal-slide-prev" src="assets/images/gallery/placeholder-1.webp" alt="" aria-hidden="true" />
+          <img class="gal-slide gal-slide-next" id="gal-slide-next" src="assets/images/gallery/placeholder-1.webp" alt="" aria-hidden="true" />
+          <img class="gal-slide gal-slide-current" id="gal-slide-current" src="assets/images/gallery/placeholder-1.webp" alt="Wedding gallery photo" />
+        </div>
       </div>
 
       <p class="gal-swipe-caption">swipe or use the buttons below to navigate</p>
@@ -166,8 +164,6 @@
         <p>Wedding photos will be available through the button below after 14th October 2026</p>
         <a class="gal-cta" href="https://drive.google.com/drive/folders/1FWm6tz707Vqrj63blVDUgqXhr1UuGJ5M?usp=drive_link" target="_blank" rel="noopener">Wedding gallery</a>
       </div>
-
-      <p class="gal-thanks">Thank you for making our day so special by joining us! &#129293;</p>
 
       <nav class="nav-pills">
         <button class="pill-btn" data-goto="hero" aria-label="Invitation"><img src="assets/buttons/invitation-button.png" alt="Invitation" /></button>

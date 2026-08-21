@@ -457,23 +457,76 @@
   if (galPrevBtn) galPrevBtn.addEventListener("click", () => galShow(-1));
   if (galNextBtn) galNextBtn.addEventListener("click", () => galShow(1));
 
-  // Swipe support, matching the "swipe or use the buttons below" caption.
-  if (galCarousel) {
-    let touchStartX = null;
-    galCarousel.addEventListener(
-      "touchstart",
-      (e) => { touchStartX = e.touches[0].clientX; },
-      { passive: true }
-    );
-    galCarousel.addEventListener(
-      "touchend",
-      (e) => {
-        if (touchStartX == null) return;
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 40) galShow(dx < 0 ? 1 : -1);
-        touchStartX = null;
-      },
-      { passive: true }
-    );
+  // Real drag-to-swipe: the whole filmstrip (prev/current/next) follows the
+  // pointer 1:1 while dragging, then either snaps the rest of the way to the
+  // next/prev photo or springs back — so it behaves like an actual photo
+  // gallery even now, while every slot still shows the same placeholder.
+  const galTrack = document.getElementById("gal-track");
+  if (galCarousel && galTrack) {
+    const SNAP_MS = 240;
+    const THRESHOLD_PX = 50;
+    // How far the track has to travel for the next/prev slide to land where
+    // "current" rests — matches the peek offsets set in the CSS.
+    const NEXT_DISTANCE = 346; // gal-slide-next left(370) - gal-slide-current left(24)
+    const PREV_DISTANCE = 254; // gal-slide-current left(24) - gal-slide-prev left(-230)
+
+    let dragging = false;
+    let startX = 0;
+    let dragX = 0;
+    let pointerId = null;
+
+    function setTrackTransition(on) {
+      galTrack.style.transition = on ? `transform ${SNAP_MS}ms ease-out` : "none";
+    }
+
+    function onPointerDown(e) {
+      dragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      dragX = 0;
+      setTrackTransition(false);
+      galCarousel.classList.add("dragging");
+      galCarousel.setPointerCapture(pointerId);
+    }
+
+    function onPointerMove(e) {
+      if (!dragging) return;
+      dragX = e.clientX - startX;
+      galTrack.style.transform = `translateX(${dragX}px)`;
+    }
+
+    function endDrag(commit) {
+      if (!dragging) return;
+      dragging = false;
+      galCarousel.classList.remove("dragging");
+      setTrackTransition(true);
+      if (commit === "next") galTrack.style.transform = `translateX(${-NEXT_DISTANCE}px)`;
+      else if (commit === "prev") galTrack.style.transform = `translateX(${PREV_DISTANCE}px)`;
+      else galTrack.style.transform = "translateX(0px)";
+
+      const finish = () => {
+        galTrack.removeEventListener("transitionend", finish);
+        setTrackTransition(false);
+        galTrack.style.transform = "translateX(0px)";
+        if (commit === "next") galShow(1);
+        else if (commit === "prev") galShow(-1);
+      };
+      galTrack.addEventListener("transitionend", finish);
+    }
+
+    function onPointerUp(e) {
+      if (!dragging) return;
+      if (pointerId != null && galCarousel.hasPointerCapture(pointerId)) {
+        galCarousel.releasePointerCapture(pointerId);
+      }
+      if (dragX <= -THRESHOLD_PX) endDrag("next");
+      else if (dragX >= THRESHOLD_PX) endDrag("prev");
+      else endDrag(null);
+    }
+
+    galCarousel.addEventListener("pointerdown", onPointerDown);
+    galCarousel.addEventListener("pointermove", onPointerMove);
+    galCarousel.addEventListener("pointerup", onPointerUp);
+    galCarousel.addEventListener("pointercancel", () => endDrag(null));
   }
 })();

@@ -378,7 +378,10 @@ body {
    follow the exact document child order of that frame (see get_metadata),
    same convention as the hero/countdown frames above. */
 
-.gallery-frame { min-height: 915px; }
+/* Trimmed from Figma's literal 915px now that the bottom-of-frame plane
+   decoration and "Thank you" text are gone — 680px keeps a little sky
+   breathing room below the wedding-gallery button without a big empty gap. */
+.gallery-frame { min-height: 680px; }
 
 .gallery-frame .sky { left: -25px; top: 0; width: 451px; height: 1318px; z-index: 10; }
 /* top nudged from Figma's literal -938px to -900px so the clouds asset's own
@@ -386,17 +389,6 @@ body {
    the 915px frame boundary instead of inside it, where it read as a visible
    seam near the bottom of the screen. */
 .gallery-frame .clouds-bg { left: -12px; top: -900px; z-index: 20; }
-
-.gal-plane-flow {
-  position: absolute;
-  left: -25px;
-  top: 656px;
-  width: 422px;
-  height: 305.404px;
-  pointer-events: none;
-  z-index: 30;
-}
-.gal-plane-flow img { display: block; width: 100%; height: 100%; }
 
 .gal-logomark { left: 87px; top: 148px; width: 221px; height: 217px; z-index: 50; }
 
@@ -439,8 +431,19 @@ body {
   text-align: center;
 }
 
-.gal-carousel { position: absolute; left: 0; top: 176px; width: 100%; height: 320px; z-index: 70; overflow: hidden; }
-.gal-slide { position: absolute; top: 18px; width: 358px; height: 254px; object-fit: cover; border-radius: 4px; -webkit-user-drag: none; }
+.gal-carousel {
+  position: absolute; left: 0; top: 176px; width: 100%; height: 320px; z-index: 70;
+  overflow: hidden;
+  touch-action: pan-y; /* let the page still scroll vertically; horizontal drag is ours */
+  cursor: grab;
+}
+.gal-carousel.dragging { cursor: grabbing; }
+/* The track is what actually moves during a swipe/drag — translating it (not
+   the individual slides) keeps prev/current/next moving together as one
+   filmstrip, so it reads as a real photo-gallery swipe rather than a static
+   image that just gets swapped out. */
+.gal-track { position: absolute; inset: 0; will-change: transform; }
+.gal-slide { position: absolute; top: 18px; width: 358px; height: 254px; object-fit: cover; border-radius: 4px; -webkit-user-drag: none; user-select: none; pointer-events: none; }
 .gal-slide-current { left: 24px; z-index: 3; }
 .gal-slide-prev { left: -230px; opacity: 0.5; z-index: 2; }
 .gal-slide-next { left: 370px; opacity: 0.5; z-index: 2; }
@@ -471,24 +474,6 @@ body {
   color: var(--ink); -webkit-tap-highlight-color: transparent;
 }
 .gal-arrow:active { filter: brightness(0.96); }
-
-.gal-thanks {
-  position: absolute;
-  left: 50%;
-  top: 659px;
-  transform: translateX(-50%);
-  width: 230px;
-  margin: 0;
-  font-family: var(--serif);
-  font-weight: 700;
-  font-style: normal;
-  font-size: 14px;
-  line-height: normal;
-  color: var(--ink);
-  text-align: center;
-  z-index: 80;
-  pointer-events: none;
-}
 
 .gal-callout { position: absolute; left: 0; top: 513px; width: 100%; height: 120px; z-index: 90; }
 .gal-callout p {
