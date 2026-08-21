@@ -126,7 +126,17 @@
     return { wrap: vec, img };
   }
 
-  function renderFlowStep(refs, step) {
+  // moveMs: how long to glide from the previous waypoint to this one. Passing
+  // the actual interval between steps (instead of 0/instant) keeps the icon
+  // continuously in motion rather than snapping to each spot and sitting
+  // there for the "hold" — that dead pause read as "stopping in the middle."
+  function renderFlowStep(refs, step, moveMs) {
+    const glide = moveMs || 0;
+    refs.wrap.style.transition = glide
+      ? `top ${glide}ms ease-in-out, left ${glide}ms ease-in-out, right ${glide}ms ease-in-out, bottom ${glide}ms ease-in-out, opacity ${glide}ms ease-in-out`
+      : "none";
+    refs.img.style.transition = glide ? `transform ${glide}ms ease-in-out` : "none";
+
     const [t, r, b, l] = step.inset;
     refs.wrap.style.inset = `${t}% ${r}% ${b}% ${l}%`;
     refs.wrap.style.display = "flex";
@@ -179,7 +189,7 @@
         return;
       }
       el.style.transition = `opacity ${opts.stepDuration}ms ease-out`;
-      renderFlowStep(refs, steps[i]);
+      renderFlowStep(refs, steps[i], opts.holdMs + opts.stepDuration);
       setTimeout(next, opts.holdMs + opts.stepDuration);
     }
     setTimeout(next, opts.revealDuration);
@@ -193,7 +203,7 @@
   const FLOW1_STEP_MS = 100;
   const FLOW2_OPTS = { revealDuration: 200, holdMs: 350, stepDuration: 200, hideAfter: true };
   const FLOW3_OPTS = { revealDuration: 200, holdMs: 350, stepDuration: 200, hideAfter: true };
-  const FLOW4_OPTS = { revealDuration: 200, holdMs: 0, stepDuration: 0, hideAfter: true };
+  const FLOW4_OPTS = { revealDuration: 200, holdMs: 0, stepDuration: 200, hideAfter: true };
 
   function chainDuration(steps, opts) {
     return opts.revealDuration + Math.max(0, steps.length - 1) * (opts.holdMs + opts.stepDuration);
@@ -216,7 +226,7 @@
         }, 10);
         return;
       }
-      renderFlowStep(flow1Refs, FLOW1_STEPS[i]);
+      renderFlowStep(flow1Refs, FLOW1_STEPS[i], FLOW1_HOLD_MS + FLOW1_STEP_MS);
       setTimeout(flow1Next, FLOW1_HOLD_MS + FLOW1_STEP_MS);
     }
     setTimeout(flow1Next, FLOW1_REVEAL_MS);
