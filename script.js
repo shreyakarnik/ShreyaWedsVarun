@@ -44,6 +44,7 @@
   const screens = {
     hero: document.getElementById("hero-screen"),
     countdown: document.getElementById("countdown-screen"),
+    gallery: document.getElementById("gallery-screen"),
   };
   const postcardZone = document.getElementById("postcard-sticky-zone");
   document.querySelectorAll("[data-goto]").forEach((btn) => {
@@ -420,4 +421,59 @@
   }
   tickCountdown();
   setInterval(tickCountdown, 1000);
+
+  /* ---------------- Gallery carousel ---------------- */
+  // Placeholder image used for every slot until real photos come in — the
+  // array shape is what matters, so cycling in real files later is a
+  // one-line change here.
+  const GALLERY_IMAGES = [
+    "assets/images/gallery/placeholder-1.webp",
+  ];
+
+  const galCurrent = document.getElementById("gal-slide-current");
+  const galPrev = document.getElementById("gal-slide-prev");
+  const galNext = document.getElementById("gal-slide-next");
+  const galPrevBtn = document.getElementById("gal-prev");
+  const galNextBtn = document.getElementById("gal-next");
+  const galCarousel = document.getElementById("gal-carousel");
+  let galIndex = 0;
+
+  function renderGallery() {
+    if (!galCurrent) return;
+    const n = GALLERY_IMAGES.length;
+    const prevIdx = (galIndex - 1 + n) % n;
+    const nextIdx = (galIndex + 1) % n;
+    galCurrent.src = GALLERY_IMAGES[galIndex];
+    if (galPrev) galPrev.src = GALLERY_IMAGES[prevIdx];
+    if (galNext) galNext.src = GALLERY_IMAGES[nextIdx];
+  }
+  renderGallery();
+
+  function galShow(delta) {
+    const n = GALLERY_IMAGES.length;
+    galIndex = (galIndex + delta + n) % n;
+    renderGallery();
+  }
+  if (galPrevBtn) galPrevBtn.addEventListener("click", () => galShow(-1));
+  if (galNextBtn) galNextBtn.addEventListener("click", () => galShow(1));
+
+  // Swipe support, matching the "swipe or use the buttons below" caption.
+  if (galCarousel) {
+    let touchStartX = null;
+    galCarousel.addEventListener(
+      "touchstart",
+      (e) => { touchStartX = e.touches[0].clientX; },
+      { passive: true }
+    );
+    galCarousel.addEventListener(
+      "touchend",
+      (e) => {
+        if (touchStartX == null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) galShow(dx < 0 ? 1 : -1);
+        touchStartX = null;
+      },
+      { passive: true }
+    );
+  }
 })();

@@ -373,6 +373,154 @@ body {
   z-index: 150; /* frontmost decorative layer, above cloud-bottom, below the fixed nav pills */
 }
 
+/* ---------- gallery screen ---------- */
+/* Transcribed from Figma node 204:134 ("gallery", 402x915). z-index values
+   follow the exact document child order of that frame (see get_metadata),
+   same convention as the hero/countdown frames above. */
+
+.gallery-frame { min-height: 915px; }
+
+.gallery-frame .sky { left: -25px; top: 0; width: 451px; height: 1318px; z-index: 10; }
+/* top nudged from Figma's literal -938px to -900px so the clouds asset's own
+   bottom edge (a hard crop line baked into the source image) lands just past
+   the 915px frame boundary instead of inside it, where it read as a visible
+   seam near the bottom of the screen. */
+.gallery-frame .clouds-bg { left: -12px; top: -900px; z-index: 20; }
+
+.gal-plane-flow {
+  position: absolute;
+  left: -25px;
+  top: 656px;
+  width: 422px;
+  height: 305.404px;
+  pointer-events: none;
+  z-index: 30;
+}
+.gal-plane-flow img { display: block; width: 100%; height: 100%; }
+
+.gal-logomark { left: 87px; top: 148px; width: 221px; height: 217px; z-index: 50; }
+
+.gal-heading {
+  position: absolute;
+  left: 0;
+  top: 79px;
+  width: 100%;
+  z-index: 70;
+  pointer-events: none;
+}
+.gal-heading h2 {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  width: 290px;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 15px;
+  line-height: normal;
+  color: var(--ink);
+  text-align: center;
+}
+.gal-heading p {
+  position: absolute;
+  left: 50%;
+  top: 38px;
+  transform: translateX(-50%);
+  width: 332px;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--ink);
+  text-align: center;
+}
+
+.gal-carousel { position: absolute; left: 0; top: 176px; width: 100%; height: 320px; z-index: 70; overflow: hidden; }
+.gal-slide { position: absolute; top: 18px; width: 358px; height: 254px; object-fit: cover; border-radius: 4px; -webkit-user-drag: none; }
+.gal-slide-current { left: 24px; z-index: 3; }
+.gal-slide-prev { left: -230px; opacity: 0.5; z-index: 2; }
+.gal-slide-next { left: 370px; opacity: 0.5; z-index: 2; }
+
+.gal-swipe-caption {
+  position: absolute;
+  left: 50%;
+  top: 448px;
+  transform: translateX(-50%);
+  width: 332px;
+  margin: 0;
+  font-family: var(--serif-italic);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 8px;
+  color: var(--ink);
+  text-align: center;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.gal-arrows { position: absolute; left: 158px; top: 467px; width: 87px; height: 23px; display: flex; justify-content: space-between; z-index: 70; }
+.gal-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 23px; padding: 0; border: 0; border-radius: 20px;
+  background: var(--pill-bg); cursor: pointer;
+  font-family: var(--serif-italic); font-style: italic; font-size: 12px;
+  color: var(--ink); -webkit-tap-highlight-color: transparent;
+}
+.gal-arrow:active { filter: brightness(0.96); }
+
+.gal-thanks {
+  position: absolute;
+  left: 50%;
+  top: 659px;
+  transform: translateX(-50%);
+  width: 230px;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: normal;
+  color: var(--ink);
+  text-align: center;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.gal-callout { position: absolute; left: 0; top: 513px; width: 100%; height: 120px; z-index: 90; }
+.gal-callout p {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  width: 332px;
+  margin: 0;
+  font-family: var(--serif-italic);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--ink);
+  text-align: center;
+  pointer-events: none;
+}
+.gal-cta {
+  position: absolute;
+  left: 50%;
+  top: 67px;
+  transform: translateX(calc(-50% - 4px));
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 98px; height: 33px; border-radius: 20px;
+  background: var(--ink); color: #fff;
+  font-family: var(--serif-italic); font-style: italic; font-weight: 700;
+  font-size: 12px; text-transform: lowercase; text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.gal-cta:active { filter: brightness(1.1); }
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 402px) {
