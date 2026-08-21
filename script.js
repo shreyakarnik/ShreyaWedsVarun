@@ -466,9 +466,9 @@
     const SNAP_MS = 240;
     const THRESHOLD_PX = 50;
     // How far the track has to travel for the next/prev slide to land where
-    // "current" rests — matches the peek offsets set in the CSS.
-    const NEXT_DISTANCE = 346; // gal-slide-next left(370) - gal-slide-current left(24)
-    const PREV_DISTANCE = 254; // gal-slide-current left(24) - gal-slide-prev left(-230)
+    // "current" rests — matches the (now symmetric, 20px-gap) offsets in the CSS.
+    const NEXT_DISTANCE = 320; // gal-slide-next left(371) - gal-slide-current left(51)
+    const PREV_DISTANCE = 320; // gal-slide-current left(51) - gal-slide-prev left(-269)
 
     let dragging = false;
     let startX = 0;

@@ -383,14 +383,19 @@ body {
    breathing room below the wedding-gallery button without a big empty gap. */
 .gallery-frame { min-height: 680px; }
 
-.gallery-frame .sky { left: -25px; top: 0; width: 451px; height: 1318px; z-index: 10; }
-/* top nudged from Figma's literal -938px to -900px so the clouds asset's own
-   bottom edge (a hard crop line baked into the source image) lands just past
-   the 915px frame boundary instead of inside it, where it read as a visible
-   seam near the bottom of the screen. */
-.gallery-frame .clouds-bg { left: -12px; top: -900px; z-index: 20; }
-
-.gal-logomark { left: 87px; top: 148px; width: 221px; height: 217px; z-index: 50; }
+/* Single background image (sky + clouds + the "VS" watermark, all baked in
+   by the user) replaces the separate sky/clouds-bg/logomark layers used on
+   the other screens. */
+.gal-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/images/gallery/gallery-bg.webp");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  z-index: 10;
+  pointer-events: none;
+}
 
 .gal-heading {
   position: absolute;
@@ -443,10 +448,13 @@ body {
    filmstrip, so it reads as a real photo-gallery swipe rather than a static
    image that just gets swapped out. */
 .gal-track { position: absolute; inset: 0; will-change: transform; }
-.gal-slide { position: absolute; top: 18px; width: 358px; height: 254px; object-fit: cover; border-radius: 4px; -webkit-user-drag: none; user-select: none; pointer-events: none; }
-.gal-slide-current { left: 24px; z-index: 3; }
-.gal-slide-prev { left: -230px; opacity: 0.5; z-index: 2; }
-.gal-slide-next { left: 370px; opacity: 0.5; z-index: 2; }
+/* All three cards share one size now (300x213, same 2478:1756 aspect as the
+   source photo) so the prev/current/next gap is identical and even on both
+   sides — 20px between every pair of edges, not just eyeballed. */
+.gal-slide { position: absolute; top: 59px; width: 300px; height: 213px; object-fit: cover; border-radius: 4px; -webkit-user-drag: none; user-select: none; pointer-events: none; }
+.gal-slide-current { left: 51px; z-index: 3; }
+.gal-slide-prev { left: -269px; opacity: 0.5; z-index: 2; }
+.gal-slide-next { left: 371px; opacity: 0.5; z-index: 2; }
 
 .gal-swipe-caption {
   position: absolute;
