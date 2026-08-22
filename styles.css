@@ -516,6 +516,17 @@ body {
 
 /* ---------- responsive ---------- */
 
-@media (max-width: 402px) {
-  .app { width: 100vw; }
+/* Below this, .app fills the viewport edge-to-edge instead of hitting the
+   402px design-width cap. 480px was chosen to clear the widest phones in
+   common use (iPhone Pro Max ~430px, big Android phones ~412px) — below
+   that cutoff .app should always be a real phone, never a desktop window,
+   so there's no reason for it to ever show a flat-color margin on the
+   sides. Above 480px the max-width cap re-engages and centers the design
+   as a mobile mockup, which is the desired look on an actual desktop
+   browser. */
+@media (max-width: 480px) {
+  /* max-width:402px from the base rule still caps the box even with
+     width:100vw set here — it has to be lifted too, or the whole 100vw
+     override is a no-op on any viewport over 402px. */
+  .app { width: 100vw; max-width: none; }
 }

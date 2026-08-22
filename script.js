@@ -262,6 +262,12 @@
     setTimeout(() => {
       const entrance = document.getElementById("postcard-entrance");
       entrance.classList.add("revealed");
+      // Auto-open the postcard itself a beat after it's done sliding into
+      // place, instead of requiring a tap. startPostcardFlip is declared
+      // further down (function declarations are hoisted), and by the time
+      // this timeout actually fires the rest of the script has long since
+      // run, so postcardCard/PC_STATES etc. are already set up.
+      setTimeout(startPostcardFlip, POSTCARD_AUTO_OPEN_DELAY_MS);
     }, flow4End);
   }
 
@@ -357,10 +363,21 @@
   renderPcState(0);
 
   const PC_DELAYS = [300, 400, 800, 400, 400, 400, 400]; // ms between each state, matching Figma AFTER_TIMEOUT chain
+  // How long after the postcard finishes sliding into place before it opens
+  // itself: the entrance's own slide-in transition is 1.7s (see .postcard-
+  // entrance.revealed in styles.css), plus a short pause so it doesn't look
+  // like it's opening mid-motion.
+  const POSTCARD_AUTO_OPEN_DELAY_MS = 1700 + 900;
+  let pcStarted = false;
 
-  postcardCard.addEventListener("click", (e) => {
-    if (e.target.closest(".pc-join")) return; // let the join link behave normally (no-op destination)
+  // Advances the postcard through its remaining states on the PC_DELAYS
+  // cadence. Called either automatically (see POSTCARD_AUTO_OPEN_DELAY_MS
+  // above) or by a tap — whichever happens first; it's a no-op after that,
+  // so a stray click once it's already auto-playing doesn't double it up.
+  function startPostcardFlip() {
+    if (pcStarted) return;
     if (pcIndex >= PC_STATES.length - 1) return;
+    pcStarted = true;
     pcTimers.forEach(clearTimeout);
     pcTimers = [];
     let idx = pcIndex;
@@ -373,6 +390,11 @@
       }
     }
     pcTimers.push(setTimeout(step, PC_DELAYS[idx] || 300));
+  }
+
+  postcardCard.addEventListener("click", (e) => {
+    if (e.target.closest(".pc-join")) return; // let the join link behave normally (no-op destination)
+    startPostcardFlip();
   });
 
   /* ---------------- Scroll parallax (stamps + clouds) ---------------- */
