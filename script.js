@@ -76,34 +76,34 @@
   const FLOW3_BG = "https://www.figma.com/api/mcp/asset/32a7b33b-4dc5-479a-b63a-cfed6bf4b6e2.svg";
 
   const FLOW1_STEPS = [
-    { inset: [0, 84.95, 95.92, 6.97], img: "https://www.figma.com/api/mcp/asset/fcdca1c9-1f5c-4c32-af50-0e7ba42bdd52.png", w: 31.7, h: 24.5, rot: 0 },
-    { inset: [0, 65.88, 95.62, 26.03], img: "https://www.figma.com/api/mcp/asset/6c570975-49c8-4995-b862-ba467ab0432e.png", w: 31.7, h: 26.2, rot: 0 },
-    { inset: [-0.52, 50.37, 95.41, 39.32], img: "https://www.figma.com/api/mcp/asset/e0000a52-09e6-46f9-98c1-4ffac5bce47f.png", w: 36.6, h: 24.5, rot: 10.28 },
-    { inset: [-0.37, 38.69, 94.62, 49.38], img: "https://www.figma.com/api/mcp/asset/3a401996-c6b0-408c-b250-ab2366ff15e9.png", w: 42.4, h: 27.2, rot: 10.28 },
-    { inset: [0.93, 24.47, 92.37, 62.59], img: "https://www.figma.com/api/mcp/asset/254a9ef4-c3c2-44b9-a2db-6a03c1ff5446.png", w: 44.2, h: 25.7, rot: 21.02, opacity: 0.25 },
-    { inset: [3.12, 11.43, 89.38, 75.47], img: "https://www.figma.com/api/mcp/asset/5aae3e4a-3d8a-495b-8e50-eef65c3a0c08.png", w: 44.2, h: 25.7, rot: 30.42 },
-    { inset: [7.11, 0.02, 83.72, 85.2], img: "https://www.figma.com/api/mcp/asset/7f8452e5-07bc-4e3a-bf07-0d2a135fa851.png", w: 51.6, h: 27.9, rot: 39.17 },
-    { inset: [13.79, -3.09, 77, 92.69], img: "https://www.figma.com/api/mcp/asset/0eb64aca-2ad4-4c87-b571-16a4eb1081fd.png", w: 48.3, h: 28.8, rot: 74.35 },
-    { inset: [17.36, -3.25, 74.54, 93.62], img: "https://www.figma.com/api/mcp/asset/a4053f33-51ab-45ea-b4cb-f796fe914f68.png", w: 42.0, h: 27.6, rot: 74.35 },
-    { inset: [31.07, 1.4, 60.47, 85.2], img: "https://www.figma.com/api/mcp/asset/1167208d-6b48-44f5-bf2e-31fca142db20.svg", fill: true, rot: -38.86 },
+    { inset: [0, 84.95, 95.92, 6.97], img: "assets/images/flow1/flow1-step0.png", w: 31.7, h: 24.5, rot: 0 },
+    { inset: [0, 65.88, 95.62, 26.03], img: "assets/images/flow1/flow1-step1.png", w: 31.7, h: 26.2, rot: 0 },
+    { inset: [-0.52, 50.37, 95.41, 39.32], img: "assets/images/flow1/flow1-step2.png", w: 36.6, h: 24.5, rot: 10.28 },
+    { inset: [-0.37, 38.69, 94.62, 49.38], img: "assets/images/flow1/flow1-step3.png", w: 42.4, h: 27.2, rot: 10.28 },
+    { inset: [0.93, 24.47, 92.37, 62.59], img: "assets/images/flow1/flow1-step4.png", w: 44.2, h: 25.7, rot: 21.02, opacity: 0.25 },
+    { inset: [3.12, 11.43, 89.38, 75.47], img: "assets/images/flow1/flow1-step5.png", w: 44.2, h: 25.7, rot: 30.42 },
+    { inset: [7.11, 0.02, 83.72, 85.2], img: "assets/images/flow1/flow1-step6.png", w: 51.6, h: 27.9, rot: 39.17 },
+    { inset: [13.79, -3.09, 77, 92.69], img: "assets/images/flow1/flow1-step7.png", w: 48.3, h: 28.8, rot: 74.35 },
+    { inset: [17.36, -3.25, 74.54, 93.62], img: "assets/images/flow1/flow1-step8.png", w: 42.0, h: 27.6, rot: 74.35 },
+    { inset: [31.07, 1.4, 60.47, 85.2], img: "assets/images/flow1/flow1-step9.png", fill: true, rot: -38.86 },
   ];
 
   const FLOW2_STEPS = [
-    { inset: [31.07, 1.4, 60.47, 85.2], img: "https://www.figma.com/api/mcp/asset/b6ac8783-ddfd-488b-a62e-f2f1f0a822fd.svg", fill: true, rot: -38.86 },
-    { inset: [27.8, 14.19, 59.86, 66.1], img: "https://www.figma.com/api/mcp/asset/4e9c41b9-aee1-4462-9c19-9d780579f2ec.svg", fill: true, rot: -38.86 },
-    { inset: [32.52, 33.42, 57.82, 47.46], img: "https://www.figma.com/api/mcp/asset/8038fb89-3c9b-41e5-95be-2c11bf93f704.svg", fill: true, rot: -14.09 },
-    { inset: [27.59, 55.63, 62.28, 23.63], img: "https://www.figma.com/api/mcp/asset/947cb28c-3789-4f74-8f3d-72f969513439.svg", fill: true, rot: -14.09 },
+    { inset: [31.07, 1.4, 60.47, 85.2], img: "assets/images/flow2/flow2-step0.png", fill: true, rot: -38.86 },
+    { inset: [27.8, 14.19, 59.86, 66.1], img: "assets/images/flow2/flow2-step1.png", fill: true, rot: -38.86 },
+    { inset: [32.52, 33.42, 57.82, 47.46], img: "assets/images/flow2/flow2-step2.png", fill: true, rot: -14.09 },
+    { inset: [27.59, 55.63, 62.28, 23.63], img: "assets/images/flow2/flow2-step3.png", fill: true, rot: -14.09 },
   ];
 
   const FLOW3_STEPS = [
-    { inset: [48.31, 74.98, 39.76, 7.57], img: "https://www.figma.com/api/mcp/asset/6b867d69-b9c2-4603-b212-c6c99b4399ab.png", w: 80, h: 63, rot: 7.82 },
-    { inset: [52.66, 54.48, 28.37, 21.72], img: "https://www.figma.com/api/mcp/asset/57c99570-d7eb-434e-a938-f1570e558da9.png", w: 94.78, h: 73.3, rot: -38.84 },
-    { inset: [49.86, 26.14, 27.8, 45.56], img: "https://www.figma.com/api/mcp/asset/e54d3bf3-7a97-4262-beec-84c0985011fb.png", w: 116.66, h: 82.23, rot: -38.84 },
+    { inset: [48.31, 74.98, 39.76, 7.57], img: "assets/images/flow3/flow3-step0.png", w: 80, h: 63, rot: 7.82 },
+    { inset: [52.66, 54.48, 28.37, 21.72], img: "assets/images/flow3/flow3-step1.png", w: 94.78, h: 73.3, rot: -38.84 },
+    { inset: [49.86, 26.14, 27.8, 45.56], img: "assets/images/flow3/flow3-step2.png", w: 116.66, h: 82.23, rot: -38.84 },
   ];
 
   const FLOW4_STEPS = [
-    { inset: [65.31, 3.15, 13.43, 72.48], img: "https://www.figma.com/api/mcp/asset/aaddcd57-5bd4-48a3-ae1f-b5333a563039.png", w: 120, h: 95.8, rot: 19.63 },
-    { inset: [92.18, -7.41, -12.74, 80.03], img: "https://www.figma.com/api/mcp/asset/1c2e9f6b-c8cf-401d-bca4-09fa294ddb4b.png", w: 143.7, h: 82.7, rot: 19.63 },
+    { inset: [65.31, 3.15, 13.43, 72.48], img: "assets/images/flow4/flow4-step0.png", w: 120, h: 95.8, rot: 19.63 },
+    { inset: [92.18, -7.41, -12.74, 80.03], img: "assets/images/flow4/flow4-step1.png", w: 143.7, h: 82.7, rot: 19.63 },
   ];
 
   function setupFlow(el, bgUrl) {
@@ -295,8 +295,8 @@
     { img: "assets/images/postcard/postcard-4.png", h: 331 },
     { img: "assets/images/postcard/postcard-5.png", h: 606.5 },
     { img: "assets/images/postcard/postcard-6.png", h: 624.6 },
-    { img: "assets/images/postcard/postcard-7.png", h: 606.5 },
-    { img: "assets/images/postcard/postcard-8.png", h: 650 },
+    { img: "assets/images/postcard/postcard-7.png", h: 465 },
+    { img: "assets/images/postcard/postcard-8.png", h: 564 },
   ];
 
   const postcardCard = document.getElementById("postcard-card");
@@ -310,8 +310,21 @@
   const PC_CROSSFADE_MS = 130; // 2x faster than the original 260ms
   let pcRemoveTimer = null;
 
+  // Bumped on every renderPcState call. The flip advances on a fixed timer
+  // (PC_DELAYS) regardless of whether the current image has actually
+  // finished downloading yet — fine on a fast/cached connection, but on a
+  // slow one a state's "load" event can fire AFTER a later state has
+  // already been requested. Without this guard that late callback still
+  // appends its (now stale) frame, and since it wasn't in the DOM yet when
+  // the newer call ran its own cleanup, it never gets removed — leaving two
+  // postcard frames stuck on screen at once (reported as the postcard
+  // "showing twice"). Each render captures its own token and only the
+  // still-current one is allowed to touch the DOM.
+  let pcRenderToken = 0;
+
   function renderPcState(idx) {
     const state = PC_STATES[idx];
+    const token = ++pcRenderToken;
 
     // The "Join The Ceremony" button is baked into postcard-8.png itself —
     // only line it up as a real link once that's the state on screen, so
@@ -336,6 +349,10 @@
     newImg.src = state.img;
 
     function swapIn() {
+      // A newer renderPcState call has since superseded this one — that
+      // call's own load/error handler will do the real swap. Bail out
+      // instead of appending an out-of-order (and now-orphaned) frame.
+      if (token !== pcRenderToken) return;
       postcardCard.style.height = state.h + "px";
       if (oldImg) {
         newImg.style.position = "absolute";
