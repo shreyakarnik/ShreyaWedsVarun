@@ -300,17 +300,24 @@
   ];
 
   const postcardCard = document.getElementById("postcard-card");
+  const pcJoin = document.getElementById("pc-join");
   let pcIndex = 0;
   let pcTimers = [];
 
   // Crossfade each state change: the new frame is laid on top and faded in;
   // the old frame is only removed once the new one has fully faded in. This
   // avoids the blank-frame "blink" a straight innerHTML swap causes.
-  const PC_CROSSFADE_MS = 260;
+  const PC_CROSSFADE_MS = 130; // 2x faster than the original 260ms
   let pcRemoveTimer = null;
 
   function renderPcState(idx) {
     const state = PC_STATES[idx];
+
+    // The "Join The Ceremony" button is baked into postcard-8.png itself —
+    // only line it up as a real link once that's the state on screen, so
+    // earlier frames (different art, different aspect ratio) don't expose a
+    // stray clickable rectangle in the wrong spot.
+    if (pcJoin) pcJoin.style.display = idx === PC_STATES.length - 1 ? "block" : "none";
 
     // Safety net: if a previous crossfade's removal hasn't fired yet (rapid
     // successive calls), collapse down to just the newest frame immediately
@@ -362,7 +369,7 @@
   }
   renderPcState(0);
 
-  const PC_DELAYS = [300, 400, 800, 400, 400, 400, 400]; // ms between each state, matching Figma AFTER_TIMEOUT chain
+  const PC_DELAYS = [150, 200, 400, 200, 200, 200, 200]; // ms between each state — 2x faster than the original Figma AFTER_TIMEOUT chain (300,400,800,400,400,400,400)
   // How long after the postcard finishes sliding into place before it opens
   // itself: the entrance's own slide-in transition is 1.7s (see .postcard-
   // entrance.revealed in styles.css), plus a short pause so it doesn't look
