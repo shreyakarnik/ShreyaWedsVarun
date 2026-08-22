@@ -248,25 +248,16 @@ body {
   background-repeat: no-repeat;
   background-image: url("assets/images/background-sky.webp");
 }
-/* hero-frame's own bottom-cloud (#hero-cloud-bottom) is a translucent white
-   cloud image that gets hard-clipped by hero-frame's overflow:hidden right
-   at the 1500px cutoff. Its composited color at that exact cutoff row
-   (cloud blended over sky, pixel-sampled: ~rgb(242,248,250)) is much
-   paler than the plain sky-continuation color starting immediately below,
-   so without any patch a hard seam shows right at the cutoff. Fixed-cloud-
-   bottom (viewport-fixed, its own separate pale mist layer) already covers
-   this exact document range for nearly every reachable scroll position at
-   mobile viewport heights, which is why a full-height solid patch here
-   read as a big flat "stark white" block once the two layers stacked —
-   this only needs to bridge the sliver right at the seam itself, not hold
-   a solid tint across the whole zone. Kept short (fades out by 18% of this
-   box's height, ~31px) so it dissolves quickly into the real sky texture
-   from ::before instead of sitting as a visible pale rectangle. */
+/* Disabled per request (opacity:0) — this patch was bridging the hard-clip
+   seam where hero-frame's own bottom-cloud gets cut off at 1500px (see the
+   git history / prior comment for the seam it was covering). Left in place
+   rather than deleted in case the seam needs revisiting later. */
 .postcard-zone-bg::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, rgb(242, 248, 250) 0%, rgba(242, 248, 250, 0) 18%);
+  opacity: 0;
 }
 .postcard-parallax {
   position: sticky;
@@ -362,24 +353,6 @@ body {
      hard-edged band sitting on top of it (e.g. the postcard's QR/button). */
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
-}
-
-/* Ambient particle overlay — sized/drawn in JS (setupParticles() in
-   script.js), this element just needs to sit centered over the app's own
-   width, fill the viewport height, and never intercept taps. Above the
-   cloud layers and regular content, below the nav pills so they stay
-   crisp. */
-.particles-canvas {
-  position: fixed;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: var(--frame-w);
-  min-width: 320px;
-  height: 100%;
-  pointer-events: none;
-  z-index: 490; /* above fixed-cloud-bottom (480), below nav-pills (500) */
 }
 
 .nav-pills {
