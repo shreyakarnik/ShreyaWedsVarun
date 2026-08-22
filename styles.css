@@ -378,6 +378,39 @@ body {
 
 /* ---------- countdown ---------- */
 
+/* New heading requested above the logomark/clock — sits in the previously
+   empty band between the frame's top edge and the logomark (top:152px),
+   so it doesn't need to disturb any existing element's position. */
+.cd-heading {
+  position: absolute;
+  left: 0;
+  top: 38px;
+  width: 100%;
+  padding: 0 24px;
+  z-index: 45; /* above cd-cloud-bottom (25) / logomark (30) */
+  pointer-events: none;
+}
+.cd-heading h2 {
+  margin: 0 0 6px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 21px;
+  line-height: 1.25;
+  color: var(--ink);
+  text-align: center;
+}
+.cd-heading p {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+  text-align: center;
+}
+
 .countdown-clock {
   position: absolute;
   left: 39px;
