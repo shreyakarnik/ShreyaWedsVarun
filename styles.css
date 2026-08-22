@@ -248,6 +248,21 @@ body {
   background-repeat: no-repeat;
   background-image: url("assets/images/background-sky.webp");
 }
+/* hero-frame's own bottom-cloud (#hero-cloud-bottom) is a translucent white
+   cloud image that gets hard-clipped by hero-frame's overflow:hidden right
+   at the 1500px cutoff — its own last visible row is still ~76% opaque
+   near-white (sampled from back-cloud-bottom.webp's bottom edge), but
+   nothing continues that coverage below 1500px, so the plain (more
+   saturated) sky color underneath was showing through as a hard seam right
+   at the cutoff. This fades the same near-white cloud tone in from the top
+   of this box (matching where hero-frame's cloud left off) down to nothing,
+   so the cloud appears to dissipate smoothly instead of being sliced off. */
+.postcard-zone-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(242, 250, 252, 0.76) 0%, rgba(242, 250, 252, 0) 65%);
+}
 .postcard-parallax {
   position: sticky;
   top: 64px; /* locks just below the fixed nav pills once scrolled into place */
