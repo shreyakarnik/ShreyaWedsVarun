@@ -362,6 +362,24 @@ body {
   mask-image: linear-gradient(to bottom, transparent 0%, black 60%);
 }
 
+/* Ambient particle overlay — sized/drawn in JS (setupParticles() in
+   script.js), this element just needs to sit centered over the app's own
+   width, fill the viewport height, and never intercept taps. Above the
+   cloud layers and regular content, below the nav pills so they stay
+   crisp. */
+.particles-canvas {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--frame-w);
+  min-width: 320px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 490; /* above fixed-cloud-bottom (480), below nav-pills (500) */
+}
+
 .nav-pills {
   position: fixed;
   left: 50%;

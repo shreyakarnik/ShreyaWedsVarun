@@ -575,4 +575,141 @@
     galCarousel.addEventListener("pointerup", onPointerUp);
     galCarousel.addEventListener("pointercancel", () => endDrag(null));
   }
+
+  /* ---------------- Ambient floating dot/sparkle layer ----------------
+     Small white dots drawn on a viewport-fixed canvas, each assigned a
+     random "depth" (0 = front, 1 = back). Front dots are bigger, brighter
+     (up to 50% opacity) and drift a little faster; back dots are smaller,
+     dimmer, and drift slower — a cheap parallax-depth illusion. They idle
+     with a slow wrap-around drift, and scatter away from an active
+     touch/pointer within a small radius, springing back toward their own
+     drift path once released. Canvas is pointer-events:none (see CSS), so
+     interaction is read from window-level pointer events instead — those
+     still fire normally on whatever's actually underneath the canvas. */
+  function setupParticles() {
+    const canvas = document.getElementById("particles-canvas");
+    if (!canvas || !canvas.getContext) return;
+    const ctx = canvas.getContext("2d");
+    const app = document.querySelector(".app");
+    if (!app) return;
+
+    const COUNT = 46;
+    const REPEL_RADIUS = 90;
+    const REPEL_STRENGTH = 2.4;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let W = 0;
+    let H = 0;
+    let particles = [];
+    let pointer = null; // {x, y} in canvas-local CSS px, or null when not actively touching
+
+    function resize() {
+      W = app.getBoundingClientRect().width;
+      H = window.innerHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function makeParticle() {
+      const depth = Math.random(); // 0 = front/near, 1 = back/far
+      return {
+        bx: Math.random() * W,
+        by: Math.random() * H,
+        depth,
+        r: 3.2 - depth * 2.2, // ~3.2px up front, ~1px in back
+        opacity: 0.5 - depth * 0.42, // 50% up front, fading to ~8% in back
+        driftX: (Math.random() - 0.5) * (0.1 + (1 - depth) * 0.09),
+        driftY: -(0.04 + Math.random() * 0.07 * (1 - depth * 0.6)),
+        phase: Math.random() * Math.PI * 2,
+        dx: 0,
+        dy: 0,
+        vx: 0,
+        vy: 0,
+      };
+    }
+
+    function setPointerFromClient(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      pointer = { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function onPointerMove(e) {
+      // "Touch" is the trigger: an active touch point, or a mouse button
+      // held down (so desktop testing/dragging works too) — a passive
+      // hover shouldn't scatter the dots.
+      if (e.pointerType === "touch" || e.buttons > 0) {
+        setPointerFromClient(e.clientX, e.clientY);
+      }
+    }
+    function onPointerDown(e) {
+      setPointerFromClient(e.clientX, e.clientY);
+    }
+    function clearPointer() {
+      pointer = null;
+    }
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("pointerup", clearPointer, { passive: true });
+    window.addEventListener("pointercancel", clearPointer, { passive: true });
+    window.addEventListener("resize", resize);
+
+    let t = 0;
+    function tick() {
+      t += 1;
+      ctx.clearRect(0, 0, W, H);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Ambient drift with a slow bob, wrapping around the edges.
+        p.bx += p.driftX;
+        p.by += p.driftY + Math.sin(t * 0.01 + p.phase) * 0.02;
+        if (p.bx < -10) p.bx = W + 10;
+        if (p.bx > W + 10) p.bx = -10;
+        if (p.by < -10) p.by = H + 10;
+        if (p.by > H + 10) p.by = -10;
+
+        // Scatter away from an active touch/pointer within REPEL_RADIUS.
+        if (pointer) {
+          const px = p.bx + p.dx;
+          const py = p.by + p.dy;
+          const ddx = px - pointer.x;
+          const ddy = py - pointer.y;
+          const dist = Math.hypot(ddx, ddy);
+          if (dist < REPEL_RADIUS && dist > 0.001) {
+            const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH * (1 - p.depth * 0.5);
+            p.vx += (ddx / dist) * force;
+            p.vy += (ddy / dist) * force;
+          }
+        }
+
+        // Spring the scatter displacement back toward the drift path.
+        p.vx += -p.dx * 0.02;
+        p.vy += -p.dy * 0.02;
+        p.vx *= 0.9;
+        p.vy *= 0.9;
+        p.dx += p.vx;
+        p.dy += p.vy;
+
+        const x = p.bx + p.dx;
+        const y = p.by + p.dy;
+
+        ctx.beginPath();
+        ctx.arc(x, y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 255, 255, " + p.opacity + ")";
+        ctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    particles = Array.from({ length: COUNT }, makeParticle);
+    requestAnimationFrame(tick);
+  }
+  setupParticles();
 })();
