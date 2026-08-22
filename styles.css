@@ -252,19 +252,21 @@ body {
    cloud image that gets hard-clipped by hero-frame's overflow:hidden right
    at the 1500px cutoff. Its composited color at that exact cutoff row
    (cloud blended over sky, pixel-sampled: ~rgb(242,248,250)) is much
-   paler than the plain sky-continuation color starting immediately below —
-   nothing continued that cloud coverage past 1500px, so a hard seam showed
-   right at the cutoff. This starts a SOLID patch matching hero-frame's
-   exact final row color (not just a low-opacity tint — a partial-opacity
-   version left a visible ~40/255 jump because the true color gap is much
-   bigger than the cloud's own translucency alone suggests) and fades that
-   down to nothing over most of this box's height, so the transition to the
-   plain sky-continuation reads as a continued dissipation, not a cut. */
+   paler than the plain sky-continuation color starting immediately below,
+   so without any patch a hard seam shows right at the cutoff. Fixed-cloud-
+   bottom (viewport-fixed, its own separate pale mist layer) already covers
+   this exact document range for nearly every reachable scroll position at
+   mobile viewport heights, which is why a full-height solid patch here
+   read as a big flat "stark white" block once the two layers stacked —
+   this only needs to bridge the sliver right at the seam itself, not hold
+   a solid tint across the whole zone. Kept short (fades out by 18% of this
+   box's height, ~31px) so it dissolves quickly into the real sky texture
+   from ::before instead of sitting as a visible pale rectangle. */
 .postcard-zone-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgb(242, 248, 250) 0%, rgba(242, 248, 250, 0) 85%);
+  background: linear-gradient(to bottom, rgb(242, 248, 250) 0%, rgba(242, 248, 250, 0) 18%);
 }
 .postcard-parallax {
   position: sticky;
