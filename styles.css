@@ -250,18 +250,21 @@ body {
 }
 /* hero-frame's own bottom-cloud (#hero-cloud-bottom) is a translucent white
    cloud image that gets hard-clipped by hero-frame's overflow:hidden right
-   at the 1500px cutoff — its own last visible row is still ~76% opaque
-   near-white (sampled from back-cloud-bottom.webp's bottom edge), but
-   nothing continues that coverage below 1500px, so the plain (more
-   saturated) sky color underneath was showing through as a hard seam right
-   at the cutoff. This fades the same near-white cloud tone in from the top
-   of this box (matching where hero-frame's cloud left off) down to nothing,
-   so the cloud appears to dissipate smoothly instead of being sliced off. */
+   at the 1500px cutoff. Its composited color at that exact cutoff row
+   (cloud blended over sky, pixel-sampled: ~rgb(242,248,250)) is much
+   paler than the plain sky-continuation color starting immediately below —
+   nothing continued that cloud coverage past 1500px, so a hard seam showed
+   right at the cutoff. This starts a SOLID patch matching hero-frame's
+   exact final row color (not just a low-opacity tint — a partial-opacity
+   version left a visible ~40/255 jump because the true color gap is much
+   bigger than the cloud's own translucency alone suggests) and fades that
+   down to nothing over most of this box's height, so the transition to the
+   plain sky-continuation reads as a continued dissipation, not a cut. */
 .postcard-zone-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(242, 250, 252, 0.76) 0%, rgba(242, 250, 252, 0) 65%);
+  background: linear-gradient(to bottom, rgb(242, 248, 250) 0%, rgba(242, 248, 250, 0) 85%);
 }
 .postcard-parallax {
   position: sticky;
