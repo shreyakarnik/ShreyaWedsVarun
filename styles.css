@@ -378,10 +378,12 @@ body {
    follow the exact document child order of that frame (see get_metadata),
    same convention as the hero/countdown frames above. */
 
-/* Trimmed from Figma's literal 915px now that the bottom-of-frame plane
-   decoration and "Thank you" text are gone — 680px keeps a little sky
-   breathing room below the wedding-gallery button without a big empty gap. */
-.gallery-frame { min-height: 680px; }
+/* Matches .hero-frame/.countdown-frame's 1500px so the background artwork
+   always runs past the bottom of any real phone viewport. A shorter frame
+   (680px, tried earlier) looked fine in a quick preview but on taller
+   viewports the flat body color showed through below the frame with a
+   visible hard seam where the sky/clouds image cut off. */
+.gallery-frame { min-height: 1500px; }
 
 /* Single background image (sky + clouds + the "VS" watermark, all baked in
    by the user) replaces the separate sky/clouds-bg/logomark layers used on
