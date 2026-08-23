@@ -291,12 +291,12 @@
   const PC_STATES = [
     { img: "assets/images/postcard/postcard-1.png", h: 208.8 },
     { img: "assets/images/postcard/postcard-2.png", h: 208.8 },
-    { img: "assets/images/postcard/postcard-3.png", h: 337 },
-    { img: "assets/images/postcard/postcard-4.png", h: 331 },
-    { img: "assets/images/postcard/postcard-5.png", h: 606.5 },
-    { img: "assets/images/postcard/postcard-6.png", h: 624.6 },
-    { img: "assets/images/postcard/postcard-7.png", h: 465 },
-    { img: "assets/images/postcard/postcard-8.png", h: 564 },
+    { img: "assets/images/postcard/postcard-3.png", h: 321 },
+    { img: "assets/images/postcard/postcard-4.png", h: 321 },
+    { img: "assets/images/postcard/postcard-5.png", h: 555 },
+    { img: "assets/images/postcard/postcard-6.png", h: 555 },
+    { img: "assets/images/postcard/postcard-7.png", h: 555 },
+    { img: "assets/images/postcard/postcard-8.png", h: 551.25 },
   ];
 
   const postcardCard = document.getElementById("postcard-card");
