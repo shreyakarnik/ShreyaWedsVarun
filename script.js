@@ -447,7 +447,7 @@
 
   /* ---------------- Countdown ---------------- */
 
-  const CEREMONY_DATE = new Date("2026-09-14T15:00:00-07:00"); // 3:00pm PT, San Francisco City Hall
+  const CEREMONY_DATE = new Date("2026-09-14T15:30:00-07:00"); // 3:30pm PT, San Francisco City Hall
 
   function pad(n) { return String(n).padStart(2, "0"); }
 
